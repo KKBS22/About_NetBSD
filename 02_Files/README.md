@@ -95,6 +95,10 @@ ssize_t write(int fd, void* buf, size_t num)
 6. Seek to a negative offset 
 7. Set Seek to 0 to jump to beginning of the file
 8. Seek past the end of the file
+	1. You can seek past the end of a file and create a sprase file (meaning a file with a hole)
+	2. But the file system must support this or else you get a file with lots of nll bytes
+	3. If the file system supports sparse file then the kernel will supply null bytes when you read the hole, but will not be on disk
+	4. Different versions of cp(1) or other tools may or may not be able to support sparse file.
 
 Returns new offset if OK, -1 on error
 
@@ -104,3 +108,10 @@ Returns new offset if OK, -1 on error
 off_t lseek(int fd, void* buf, size_t num)
 // Returns new offset if OK, -1 on error
 ```
+
+## I/O efficiency
+
+Well, the reason that we can't keep gaining efficiency by increasing the buffer has to do with the file system. 
+The file system has a fixed block size in which it readsdata from the disk, and no matter how large your buffer is,
+the file system cannot read more efficiently than whatever that process is. What we see here in our benchmark is this effect:
+the file system has a block size of 16k, so increasing the buffer size beyond that value doesn't buy us a whole lot.
