@@ -124,15 +124,15 @@ well as a pointer to the file table entry.
 3. We donot implement the file system logic immediately but rather provide vnode which allows for the abstraction of the file system API. It contains the vnode information
 and indode information.
 
-<img src="https://github.com/KKBS22/About_NetBSD/tree/master/02_Files/FileSharing.png" width="500">
+<img src="https://github.com/KKBS22/About_NetBSD/blob/master/02_Files/FileSharing.png" width="500">
 
 If a process open a file twice, the data structure is as below. As shown below the file table entries are distinct but point to the same vnode table entry.
 
-<img src="https://github.com/KKBS22/About_NetBSD/tree/master/02_Files/FileSharing1.png" width="500">
+<img src="https://github.com/KKBS22/About_NetBSD/blob/master/02_Files/FileSharing1.png" width="500">
 
 If two different processes open the same file.
 
-<img src="https://github.com/KKBS22/About_NetBSD/tree/master/02_Files/FileSharing2.png" width="500">
+<img src="https://github.com/KKBS22/About_NetBSD/blob/master/02_Files/FileSharing2.png" width="500">
 
 # Atomic operations
 
