@@ -115,3 +115,34 @@ Well, the reason that we can't keep gaining efficiency by increasing the buffer 
 The file system has a fixed block size in which it readsdata from the disk, and no matter how large your buffer is,
 the file system cannot read more efficiently than whatever that process is. What we see here in our benchmark is this effect:
 the file system has a block size of 16k, so increasing the buffer size beyond that value doesn't buy us a whole lot.
+
+## File Sharing
+
+1. The kernel maintains a process table, in that each process table entry contains a table of file descriptors, which inturn contains the file descriptor flags.As
+well as a pointer to the file table entry.
+2. The kernel also maintains a file table, each entry contains the file status flags, current offset and a pointer to the vnode entry table.
+3. We donot implement the file system logic immediately but rather provide vnode which allows for the abstraction of the file system API. It contains the vnode information
+and indode information.
+
+<img src="https://github.com/KKBS22/About_NetBSD/tree/master/02_Files/FileSharing.png" width="500">
+
+If a process open a file twice, the data structure is as below. As shown below the file table entries are distinct but point to the same vnode table entry.
+
+<img src="https://github.com/KKBS22/About_NetBSD/tree/master/02_Files/FileSharing1.png" width="500">
+
+If two different processes open the same file.
+
+<img src="https://github.com/KKBS22/About_NetBSD/tree/master/02_Files/FileSharing2.png" width="500">
+
+# Atomic operations
+
+## pread(2) and pwrite(2)
+
+1. offset to atomically seek before issuing the read write operation.
+
+```Python
+#include<unistd.h>
+ssize_t pread(int fd, void* buf, size_t num, off_t offset)
+ssize_t pwrite(int fd, void* buf, size_t num, off_t offset)
+// Returns number of bytes written, -1 on error
+```
