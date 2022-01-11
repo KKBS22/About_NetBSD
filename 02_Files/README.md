@@ -146,3 +146,38 @@ ssize_t pread(int fd, void* buf, size_t num, off_t offset)
 ssize_t pwrite(int fd, void* buf, size_t num, off_t offset)
 // Returns number of bytes written, -1 on error
 ```
+
+## dup(2)
+
+File descriptor duplication.It duplicates the existing file descriptor and you get back the second file handle pointing to the same table as the first one.
+
+```Python
+#include<unistd.h>
+int dup(int oldfd);
+int dup2(int oldfd, int newfd);
+// Returns : newfd, -1 on error
+```
+<img src="https://github.com/KKBS22/About_NetBSD/blob/master/02_Files/dup.png" width="500">
+
+## dup2(2)
+
+It allows for redirection of existing file descriptor. The existing will be closed and instead be pointing to the originals file tabel entry.
+
+```Python
+Example:
+#include<unistd.h>
+// dup2 STDERR to STDOUT, that is we are redirecting an messages sent to STDERR to currently wherever STDOUT goes.
+dup2(STDOUT_FILENO, STDERR_FILENO);
+// Returns : newfd, -1 on error
+```
+
+# File Descriptor Control
+
+## fcntl(2)
+
+Fcntl is a "catch all" function that can do a whole bunch of things.
+
+## ioctl(2)
+
+
+
